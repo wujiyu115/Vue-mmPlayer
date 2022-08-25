@@ -28,7 +28,9 @@
               />
             </div>
           </div>
-          <span class="list-artist">{{ item.singer }}</span>
+          <span class="download-btn" @click.stop='downloadItem(item, index)'> 下载 </span>
+          <span class="list-artist">{{ item.singer }}
+          </span>
           <span v-if="isDuration" class="list-time">
             {{ item.duration % 3600 | format }}
             <mm-icon
@@ -52,6 +54,7 @@
 import { mapGetters, mapMutations } from 'vuex'
 import { format } from '@/utils/util'
 import MmNoResult from 'base/mm-no-result/mm-no-result'
+import { downloadMusic } from 'api'
 
 const LIST_TYPE_ALBUM = 'album'
 const LIST_TYPE_DURATION = 'duration'
@@ -133,6 +136,19 @@ export default {
     scrollTo() {
       this.$refs.listContent.scrollTop = 0
     },
+    downloadItem(item, index, e) {
+      if (e && /list-menu-icon-del/.test(e.target.className)) {
+        return;
+      }
+      const file = item.name + '-' + item.singer + '.mp3'
+      console.log('downloading', item.url, file)
+      downloadMusic(item.url, file)
+        .then(res => {
+          console.log('download', res)
+        }).catch(error => {
+          this.$mmToast(error.response)
+        });
+    },
     // 播放暂停事件
     selectItem(item, index, e) {
       if (e && /list-menu-icon-del/.test(e.target.className)) {
@@ -187,6 +203,29 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.download-btn {
+    display: inline-block;
+    height: 40px;
+    box-sizing: border-box;
+    margin-top: 5px;
+    margin-right: 20px;
+    padding: 0 15px;
+    border: 1px solid @btn_color;
+    color: @btn_color;
+    border-radius: 2px;
+    font-size: 14px;
+    line-height: 40px;
+    overflow: hidden;
+    cursor: pointer;
+    &:nth-last-of-type(1) {
+      margin: 0;
+    }
+    &:hover,
+    &.active {
+      border-color: @btn_color_active;
+      color: @btn_color_active;
+    }
+}
 .list-header {
   border-bottom: 1px solid @list_head_line_color;
   color: @text_color_active;
@@ -238,7 +277,7 @@ export default {
 
   &:hover {
     .list-name {
-      padding-right: 80px;
+      padding-right: 60px;
 
       .list-menu {
         display: block;
