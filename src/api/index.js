@@ -122,10 +122,10 @@ export function getComment(id, page, limit = defaultLimit) {
 
 // 下载音乐
 export function downloadMusic(url, fileName) {
-    return axios.get('/download', {
-        params: {
-            url: url,
-            file: fileName
-        }
-    })
+  return axios.get('/download', {
+    params: {
+      url: url,
+      file: fileName
+    }
+  })
 }
