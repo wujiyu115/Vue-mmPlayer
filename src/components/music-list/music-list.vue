@@ -141,10 +141,10 @@ export default {
         return;
       }
       const file = item.name + '-' + item.singer + '.mp3'
-      console.log('downloading', item.url, file)
+      // console.log('downloading', item.url, file)
       downloadMusic(item.url, file)
         .then(res => {
-          console.log('download', res)
+          // console.log('download', res)
         }).catch(error => {
           this.$mmToast(error.response)
         });
