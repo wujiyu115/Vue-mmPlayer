@@ -28,9 +28,8 @@
               />
             </div>
           </div>
-          <span class="download-btn" @click.stop='downloadItem(item, index)'> 下载 </span>
-          <span class="list-artist">{{ item.singer }}
-          </span>
+          <span class="download-btn" @click.stop="downloadItem(item, index)">下载</span>
+          <span class="list-artist">{{ item.singer }}</span>
           <span v-if="isDuration" class="list-time">
             {{ item.duration % 3600 | format }}
             <mm-icon
@@ -66,16 +65,16 @@ const THRESHOLD = 100
 export default {
   name: 'MusicList',
   components: {
-    MmNoResult
+    MmNoResult,
   },
   filters: {
-    format
+    format,
   },
   props: {
     // 歌曲数据
     list: {
       type: Array,
-      default: () => []
+      default: () => [],
     },
     /**
      * 列表类型
@@ -85,19 +84,19 @@ export default {
      */
     listType: {
       type: String,
-      default: LIST_TYPE_ALBUM
-    }
+      default: LIST_TYPE_ALBUM,
+    },
   },
   data() {
     return {
-      lockUp: true // 是否锁定滚动加载事件,默认锁定
+      lockUp: true, // 是否锁定滚动加载事件,默认锁定
     }
   },
   computed: {
     isDuration() {
       return this.listType === LIST_TYPE_DURATION
     },
-    ...mapGetters(['playing', 'currentMusic'])
+    ...mapGetters(['playing', 'currentMusic']),
   },
   watch: {
     list(newList, oldList) {
@@ -109,7 +108,7 @@ export default {
       } else if (newList[newList.length - 1].id !== oldList[oldList.length - 1].id) {
         this.lockUp = false
       }
-    }
+    },
   },
   activated() {
     this.scrollTop && this.$refs.listContent && (this.$refs.listContent.scrollTop = this.scrollTop)
@@ -134,16 +133,17 @@ export default {
     },
     downloadItem(item, index, e) {
       if (e && /list-menu-icon-del/.test(e.target.className)) {
-        return;
+        return
       }
       const file = item.name + '-' + item.singer + '.mp3'
       // console.log('downloading', item.url, file)
       downloadMusic(item.url, file)
-        .then(res => {
+        .then((res) => {
           // console.log('download', res)
-        }).catch(error => {
+        })
+        .catch((error) => {
           this.$mmToast(error.response)
-        });
+        })
     },
     // 播放暂停事件
     selectItem(item, index, e) {
@@ -183,7 +183,7 @@ export default {
     getPlayIconType({ id: itemId }) {
       const {
         playing,
-        currentMusic: { id }
+        currentMusic: { id },
       } = this
       return playing && id === itemId ? 'pause-mini' : 'play-mini'
     },
@@ -192,35 +192,35 @@ export default {
       this.$emit('del', index) // 触发删除事件
     },
     ...mapMutations({
-      setPlaying: 'SET_PLAYING'
-    })
-  }
+      setPlaying: 'SET_PLAYING',
+    }),
+  },
 }
 </script>
 
 <style lang="less" scoped>
 .download-btn {
-    display: inline-block;
-    height: 40px;
-    box-sizing: border-box;
-    margin-top: 5px;
-    margin-right: 20px;
-    padding: 0 15px;
-    border: 1px solid @btn_color;
-    color: @btn_color;
-    border-radius: 2px;
-    font-size: 14px;
-    line-height: 40px;
-    overflow: hidden;
-    cursor: pointer;
-    &:nth-last-of-type(1) {
-      margin: 0;
-    }
-    &:hover,
-    &.active {
-      border-color: @btn_color_active;
-      color: @btn_color_active;
-    }
+  display: inline-block;
+  height: 40px;
+  box-sizing: border-box;
+  margin-top: 5px;
+  margin-right: 20px;
+  padding: 0 15px;
+  border: 1px solid @btn_color;
+  color: @btn_color;
+  border-radius: 2px;
+  font-size: 14px;
+  line-height: 40px;
+  overflow: hidden;
+  cursor: pointer;
+  &:nth-last-of-type(1) {
+    margin: 0;
+  }
+  &:hover,
+  &.active {
+    border-color: @btn_color_active;
+    color: @btn_color_active;
+  }
 }
 .music-list {
   height: 100%;
