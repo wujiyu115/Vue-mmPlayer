@@ -1,27 +1,13 @@
 <template>
   <!--评论-->
-  <div class="comment">
+  <div class="comment" @scroll="listScroll($event)">
     <mm-loading v-model="mmLoadShow" />
-    <dl
-      v-if="hotComments.length > 0"
-      class="comment-list"
-      @scroll="listScroll($event)"
-    >
+    <dl v-if="hotComments.length > 0" class="comment-list">
       <!--精彩评论-->
       <dt class="comment-title">精彩评论</dt>
-      <dd
-        v-for="item in hotComments"
-        :key="item.commentId"
-        class="comment-item"
-      >
-        <a
-          target="_blank"
-          :href="`https://music.163.com/#/user/home?id=${item.user.userId}`"
-        >
-          <img
-            v-lazy="`${item.user.avatarUrl}?param=50y50`"
-            class="comment-item-pic"
-          />
+      <dd v-for="item in hotComments" :key="item.commentId" class="comment-item">
+        <a target="_blank" :href="`https://music.163.com/#/user/home?id=${item.user.userId}`">
+          <img v-lazy="`${item.user.avatarUrl}?param=50y50`" class="comment-item-pic" />
           <h2 class="comment-item-title">{{ item.user.nickname }}</h2>
         </a>
         <p class="comment-item-disc">{{ item.content }}</p>
@@ -33,28 +19,20 @@
           </span>
         </div>
       </dd>
-      <!--最新评论-->
+    </dl>
+    <!--最新评论-->
+    <dl v-if="commentList.length > 0" class="comment-list">
       <dt class="comment-title">最新评论（{{ total }}）</dt>
-      <dd
-        v-for="item in commentList"
-        :key="item.commentId"
-        class="comment-item"
-      >
+      <dd v-for="item in commentList" :key="item.commentId" class="comment-item">
         <a
           class="comment-item-pic"
           target="_blank"
           :href="`https://music.163.com/#/user/home?id=${item.user.userId}`"
         >
-          <img
-            v-lazy="`${item.user.avatarUrl}?param=50y50`"
-            class="cover-img"
-          />
+          <img v-lazy="`${item.user.avatarUrl}?param=50y50`" class="cover-img" />
         </a>
         <h2 class="comment-item-title">
-          <a
-            target="_blank"
-            :href="`https://music.163.com/#/user/home?id=${item.user.userId}`"
-          >
+          <a target="_blank" :href="`https://music.163.com/#/user/home?id=${item.user.userId}`">
             {{ item.user.nickname }}
           </a>
         </h2>
@@ -66,9 +44,7 @@
         >
           <a
             target="_blank"
-            :href="
-              `https://music.163.com/#/user/home?id=${beReplied.user.userId}`
-            "
+            :href="`https://music.163.com/#/user/home?id=${beReplied.user.userId}`"
           >
             {{ beReplied.user.nickname }}
           </a>
@@ -113,17 +89,9 @@ export default {
       const diff = newTime.getTime() - time
       if (newTime.getDate() === dateObj.date && diff < 60000) {
         formatTime = '刚刚'
-      } else if (
-        newTime.getDate() === dateObj.date &&
-        diff > 60000 &&
-        diff < 3600000
-      ) {
+      } else if (newTime.getDate() === dateObj.date && diff > 60000 && diff < 3600000) {
         formatTime = `${Math.floor(diff / 60000)}分钟前`
-      } else if (
-        newTime.getDate() === dateObj.date &&
-        diff > 3600000 &&
-        diff < 86400000
-      ) {
+      } else if (newTime.getDate() === dateObj.date && diff > 3600000 && diff < 86400000) {
         formatTime = `${addZero(dateObj.hours)}:${addZero(dateObj.minutes)}`
       } else if (newTime.getDate() !== dateObj.date && diff < 86400000) {
         formatTime = `昨天${addZero(dateObj.hours)}:${addZero(dateObj.minutes)}`
@@ -158,7 +126,7 @@ export default {
   methods: {
     // 初始化数据
     initData() {
-      getComment(this.$route.params.id, this.page).then(res => {
+      getComment(this.$route.params.id, this.page).then((res) => {
         this.hotComments = res.hotComments
         this.commentList = res.comments
         this.total = res.total
@@ -190,81 +158,80 @@ export default {
 
 <style lang="less" scoped>
 .comment {
-  position: relative;
-  transform: translate3d(0, 0, 0);
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
   .comment-list {
-    height: 100%;
     padding: 0 10px;
-    overflow-x: hidden;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
-    .comment-title {
-      height: 34px;
-      line-height: 34px;
-      padding: 10px 0;
-      color: @text_color_active;
-      border-bottom: 1px solid @comment_head_line_color;
+  }
+
+  .comment-title {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    margin: 0 -10px;
+    padding: 10px;
+    height: 34px;
+    line-height: 34px;
+    color: @text_color_active;
+    background: @header_bg_color;
+    backdrop-filter: @backdrop_filter;
+  }
+  .comment-item {
+    position: relative;
+    padding: 15px 0 15px 55px;
+    & + .comment-item {
+      border-top: 1px solid @comment_item_line_color;
     }
-    .comment-item {
-      position: relative;
-      padding: 15px 0 15px 55px;
-      border-bottom: 1px solid @comment_item_line_color;
-      .comment-item-pic {
-        display: block;
-        position: absolute;
-        left: 0;
-        top: 20px;
-        width: 38px;
-        height: 38px;
-        border-radius: 50%;
-        overflow: hidden;
+    &-pic {
+      display: block;
+      position: absolute;
+      left: 0;
+      top: 20px;
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      overflow: hidden;
+    }
+    &-title {
+      height: 20px;
+      margin-bottom: 6px;
+      font-weight: 400;
+      .no-wrap();
+      color: @text_color_active;
+    }
+    &-disc {
+      overflow: hidden;
+      word-break: break-all;
+      word-wrap: break-word;
+      line-height: 25px;
+      text-align: justify;
+      color: @text_color;
+      img {
+        position: relative;
+        vertical-align: middle;
+        top: -2px;
       }
-      .comment-item-title {
-        height: 20px;
-        margin-bottom: 6px;
-        font-weight: 400;
-        .no-wrap();
+    }
+    &-replied {
+      padding: 8px 19px;
+      margin-top: 10px;
+      line-height: 20px;
+      border: 1px solid @comment_replied_line_color;
+      a {
         color: @text_color_active;
       }
-      .comment-item-disc {
-        overflow: hidden;
-        word-break: break-all;
-        word-wrap: break-word;
-        line-height: 25px;
-        text-align: justify;
-        color: @text_color;
-        img {
-          position: relative;
-          vertical-align: middle;
-          top: -2px;
-        }
+    }
+    &-opt {
+      margin-top: 10px;
+      line-height: 25px;
+      text-align: right;
+      overflow: hidden;
+      .comment-opt-date {
+        float: left;
+        line-height: 28px;
       }
-      .comment-item-replied {
-        padding: 8px 19px;
-        margin-top: 10px;
+      .comment-opt-liked {
+        display: inline-block;
+        height: 20px;
         line-height: 20px;
-        border: 1px solid @comment_replied_line_color;
-        a {
-          color: @text_color_active;
-        }
-      }
-      .comment-item-opt {
-        margin-top: 10px;
-        line-height: 25px;
-        text-align: right;
-        overflow: hidden;
-        .comment-opt-date {
-          float: left;
-          line-height: 28px;
-        }
-        .comment-opt-liked {
-          display: inline-block;
-          height: 20px;
-          line-height: 20px;
-        }
       }
     }
   }

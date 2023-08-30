@@ -3,17 +3,8 @@
   <div class="userList">
     <mm-loading v-model="mmLoadShow" />
     <template v-if="list.length > 0">
-      <div
-        v-for="item in formatList"
-        :key="item.id"
-        class="list-item"
-        :title="item.name"
-      >
-        <router-link
-          :to="{ path: `/music/details/${item.id}` }"
-          tag="div"
-          class="userList-item"
-        >
+      <div v-for="item in formatList" :key="item.id" class="list-item" :title="item.name">
+        <router-link :to="{ path: `/music/details/${item.id}` }" tag="div" class="userList-item">
           <img v-lazy="`${item.coverImgUrl}?param=200y200`" class="cover-img" />
           <h3 class="name">{{ item.name }}</h3>
         </router-link>
@@ -46,7 +37,7 @@ export default {
   },
   computed: {
     formatList() {
-      return this.list.filter(item => item.trackCount > 0)
+      return this.list.filter((item) => item.trackCount > 0)
     },
     ...mapGetters(['uid'])
   },
@@ -76,7 +67,7 @@ export default {
   methods: {
     // 获取我的歌单详情
     _getUserPlaylist(uid) {
-      getUserPlaylist(uid).then(res => {
+      getUserPlaylist(uid).then((res) => {
         if (res.playlist.length === 0) {
           return
         }
@@ -90,9 +81,6 @@ export default {
 
 <style lang="less" scoped>
 .userList {
-  position: relative;
-  width: 100%;
-  height: 100%;
   overflow-x: hidden;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;

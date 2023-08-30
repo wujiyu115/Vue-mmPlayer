@@ -1,6 +1,6 @@
 <template>
   <!--歌曲列表-->
-  <div class="musicList">
+  <div class="music-list flex-col">
     <template v-if="list.length > 0">
       <div class="list-item list-header">
         <span class="list-name">歌曲</span>
@@ -106,17 +106,13 @@ export default {
       }
       if (newList.length !== oldList.length) {
         this.lockUp = false
-      } else if (
-        newList[newList.length - 1].id !== oldList[oldList.length - 1].id
-      ) {
+      } else if (newList[newList.length - 1].id !== oldList[oldList.length - 1].id) {
         this.lockUp = false
       }
     }
   },
   activated() {
-    this.scrollTop &&
-      this.$refs.listContent &&
-      (this.$refs.listContent.scrollTop = this.scrollTop)
+    this.scrollTop && this.$refs.listContent && (this.$refs.listContent.scrollTop = this.scrollTop)
   },
   methods: {
     // 滚动事件
@@ -226,6 +222,10 @@ export default {
       color: @btn_color_active;
     }
 }
+.music-list {
+  height: 100%;
+}
+
 .list-header {
   border-bottom: 1px solid @list_head_line_color;
   color: @text_color_active;
@@ -237,8 +237,7 @@ export default {
 }
 
 .list-content {
-  width: 100%;
-  height: calc(~'100% - 60px');
+  flex: 1;
   overflow-x: hidden;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
@@ -366,6 +365,21 @@ export default {
       top: 50%;
       left: 0;
       transform: translateY(-50%);
+    }
+  }
+}
+
+.list-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50px;
+  span {
+    padding: 5px 20px;
+    cursor: pointer;
+    user-select: none;
+    &:hover {
+      color: @text_color_active;
     }
   }
 }

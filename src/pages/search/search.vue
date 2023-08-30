@@ -1,13 +1,9 @@
 <template>
   <!--搜索-->
-  <div class="search">
+  <div class="search flex-col">
     <mm-loading v-model="mmLoadShow" />
     <div class="search-head">
-      <span
-        v-for="(item, index) in Artists"
-        :key="index"
-        @click="clickHot(item.first)"
-      >
+      <span v-for="(item, index) in Artists" :key="index" @click="clickHot(item.first)">
         {{ item.first }}
       </span>
       <input
@@ -18,20 +14,22 @@
         @keyup.enter="onEnter"
       />
     </div>
-    <music-list
-      ref="musicList"
-      :list="list"
-      list-type="pullup"
-      @select="selectItem"
-      @pullUp="pullUpLoad"
-    />
+    <div class="flex-1 overflow-hidden">
+      <music-list
+        ref="musicList"
+        :list="list"
+        list-type="pullup"
+        @select="selectItem"
+        @pullUp="pullUpLoad"
+      />
+    </div>
   </div>
 </template>
 
 <script>
 import { mapGetters, mapActions, mapMutations } from 'vuex'
 import { search, searchHot, getMusicDetail } from 'api'
-import formatSongs from '@/utils/song'
+import { formatSongs } from '@/utils/song'
 import MmLoading from 'base/mm-loading/mm-loading'
 import MusicList from 'components/music-list/music-list'
 import { loadMixin } from '@/utils/mixin'
@@ -60,9 +58,7 @@ export default {
     list(newList, oldList) {
       if (newList.length !== oldList.length) {
         this.lockUp = false
-      } else if (
-        newList[newList.length - 1].id !== oldList[oldList.length - 1].id
-      ) {
+      } else if (newList[newList.length - 1].id !== oldList[oldList.length - 1].id) {
         this.lockUp = false
       }
     }
@@ -131,15 +127,14 @@ export default {
 
 <style lang="less" scoped>
 .search {
-  position: relative;
-  width: 100%;
+  overflow: hidden;
   height: 100%;
   .search-head {
     display: flex;
     height: 40px;
     padding: 10px 15px;
     overflow: hidden;
-    background: @search_bg_coloe;
+    background: @search_bg_color;
     span {
       line-height: 40px;
       margin-right: 15px;
@@ -168,10 +163,6 @@ export default {
         color: @text_color;
       }
     }
-  }
-  .musicList {
-    width: 100%;
-    height: calc(~'100% - 50px');
   }
 }
 </style>

@@ -11,16 +11,9 @@
           class="list-item"
           :title="`${item.name}-${item.updateFrequency}`"
         >
-          <router-link
-            :to="{ path: `/music/details/${item.id}` }"
-            tag="div"
-            class="topList-item"
-          >
+          <router-link :to="{ path: `/music/details/${item.id}` }" tag="div" class="topList-item">
             <div class="topList-img">
-              <img
-                v-lazy="`${item.coverImgUrl}?param=300y300`"
-                class="cover-img"
-              />
+              <img v-lazy="`${item.coverImgUrl}?param=300y300`" class="cover-img" />
             </div>
             <h3 class="name">{{ item.name }}</h3>
           </router-link>
@@ -28,17 +21,8 @@
       </div>
       <div class="topList-head">热门歌单</div>
       <div class="topList-content">
-        <div
-          v-for="(item, index) in hotList"
-          :key="index"
-          class="list-item"
-          :title="item.name"
-        >
-          <router-link
-            :to="{ path: `/music/details/${item.id}` }"
-            tag="div"
-            class="topList-item"
-          >
+        <div v-for="(item, index) in hotList" :key="index" class="list-item" :title="item.name">
+          <router-link :to="{ path: `/music/details/${item.id}` }" tag="div" class="topList-item">
             <div class="topList-img">
               <img v-lazy="`${item.picUrl}?param=300y300`" class="cover-img" />
             </div>
@@ -70,7 +54,7 @@ export default {
   created() {
     Promise.all([getToplistDetail(), getPersonalized()])
       .then(([topList, hotList]) => {
-        this.list = topList.list.filter(v => v.ToplistType)
+        this.list = topList.list.filter((v) => v.ToplistType)
         this.hotList = hotList.result.slice()
         this._hideLoad()
       })
@@ -81,9 +65,6 @@ export default {
 
 <style lang="less" scoped>
 .topList {
-  position: relative;
-  width: 100%;
-  height: 100%;
   overflow-x: hidden;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;

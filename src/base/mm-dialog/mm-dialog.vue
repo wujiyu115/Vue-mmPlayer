@@ -17,11 +17,7 @@
               v-text="cancelBtnText"
             ></div>
             <slot name="btn"></slot>
-            <div
-              class="mm-btn-confirm"
-              @click="confirm"
-              v-text="confirmBtnText"
-            ></div>
+            <div class="mm-btn-confirm" @click="confirm" v-text="confirmBtnText"></div>
           </div>
         </div>
       </div>
@@ -126,6 +122,7 @@ export default {
   z-index: 1996;
   background-color: @dialog_bg_color;
   user-select: none;
+  backdrop-filter: @backdrop_filter;
   &.@{dialog-prefix-cls}-fade-enter-active {
     animation: mm-dialog-fadein 0.3s;
     .@{dialog-prefix-cls}-content {
@@ -140,11 +137,11 @@ export default {
     z-index: 1996;
     .@{dialog-prefix-cls}-content {
       width: 420px;
-      border-radius: 5px;
+      border-radius: @dialog_border_radius;
       background: @dialog_content_bg_color;
       @media (max-width: 767px) {
         width: 270px;
-        border-radius: 10px;
+        border-radius: @dialog_mobile_border_radius;
         text-align: center;
       }
       .@{dialog-prefix-cls}-head {
@@ -170,15 +167,12 @@ export default {
           div {
             display: block;
             padding: 8px 15px;
-            border-radius: 3px;
+            border-radius: @dialog_btn_mobile_border_radius;
             border: 1px solid @btn_color;
             font-size: @font_size_medium;
             cursor: pointer;
             &:not(:nth-of-type(1)) {
               margin-left: 10px;
-            }
-            &.mm-btn-confirm {
-              border-style: @btn_color_active;
             }
             &:hover {
               color: @text_color_active;

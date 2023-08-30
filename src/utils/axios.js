@@ -6,7 +6,7 @@ const request = axios.create({
 })
 
 request.interceptors.response.use(
-  response => {
+  (response) => {
     window.response = response
 
     if (response.status === 200 && response.data.code === 200) {
@@ -14,10 +14,8 @@ request.interceptors.response.use(
     }
     return Promise.reject(response)
   },
-  error => {
-    Vue.prototype.$mmToast(
-      error.response ? error.response.data.message : error.message
-    )
+  (error) => {
+    Vue.prototype.$mmToast(error.response ? error.response.data.message : error.message)
     return error
   }
 )

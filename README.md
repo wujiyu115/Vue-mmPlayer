@@ -1,26 +1,29 @@
 # mmPlayer
 
-模仿 QQ 音乐网页版界面，采用 `flexbox` 和 `position` 布局；
-mmPlayer 虽然是响应式，但主要以 PC 端为主，移动端只做相应适配；
+> mmPlayer 是由茂茂开源的一款在线音乐播放器，具有音乐搜索、播放、歌词显示、播放历史、查看歌曲评论、网易云用户歌单播放同步等功能
+
+模仿 QQ 音乐网页版界面，采用 `flexbox` 和 `position` 布局；<br />
+mmPlayer 虽然是响应式，但主要以 PC 端为主，移动端只做相应适配；<br />
 只做主流浏览器兼容（对 IE 说拜拜，想想以前做项目还要兼容 IE7 ，都是泪啊！！！）
 
-> api：一个开源的[网易云音乐 NodeJS 版 API](https://binaryify.github.io/NeteaseCloudMusicApi)（有 api 才有动力写！！！）
->
-> [在线演示地址](https://netease-music.fe-mm.com/)
->
-> [React 移动端版本（高仿网易云音乐）](https://github.com/maomao1996/react-music)
->
-> [交流 QQ 群：529940193](http://shang.qq.com/wpa/qunwpa?idkey=f8be1b627a89108ccfda9308720d2a4d0eb3306f253c5d3e8d58452e20b91129) 本群不解答部署相关问题，如有部署问题请看[关于项目线上部署](#关于项目线上部署)
->
-> 本播放器由 [maomao1996](https://github.com/maomao1996) 开发，您可以随意修改、使用、转载。但使用或转载时请务必保留出处！！！
+- [在线演示地址](https://netease-music.fe-mm.com/)
+- [React 移动端版本（高仿网易云音乐）](https://github.com/maomao1996/react-music)
+- [交流 QQ 群：529940193](http://shang.qq.com/wpa/qunwpa?idkey=f8be1b627a89108ccfda9308720d2a4d0eb3306f253c5d3e8d58452e20b91129) 本群不解答部署相关问题，如有部署问题请看[关于项目线上部署](#关于项目线上部署)
+- 本播放器由 **[茂茂](https://github.com/maomao1996) 开发**，您可以随意修改、使用、转载。但**使用或转载时请务必保留出处（控制台的注释信息）**！！！
 
 ## 免责声明
 
-本站音频文件来自各网站接口，本站不会修改任何音频文件
+1. 本项目是一个**前端练手的实战项目**，旨在**帮助开发者提升技能水平和对前端技术的理解**。
 
-音频版权来自各网站，本站只提供数据查询服务，不提供任何音频存储和贩卖服务
+2. 本项目**不提供任何音频存储和贩卖服务**。所有音频内容均由网易云音乐的第三方 API 提供，**仅供个人学习研究使用，严禁将其用于任何商业及非法用途**，版权归原始平台所有。
 
-本项目仅为前端练手项目，请勿用作商业用途，请勿通过本项目下载盗版歌曲资源，否则后果自负！
+3. 使用本项目造成的任何纠纷、责任或损失**由使用者自行承担**。本项目开发者不对因使用本项目而产生的任何直接或间接责任承担责任，并保留追究使用者违法行为的权利。
+
+4. **请使用者在使用本项目时遵守相关法律法规，不得将本项目用于任何商业及非法用途**。如有违反，一切后果由使用者自负。同时，使用者应该自行承担因使用本项目而带来的风险和责任。
+
+5. 本项目使用了网易云音乐的[第三方 API 服务](https://github.com/Binaryify/NeteaseCloudMusicApi)，对于该第三方 API 服务造成的任何问题，本项目开发者不承担责任。
+
+请在使用本项目之前仔细阅读以上免责声明，并确保您已完全理解并接受其中的所有条款和条件。如果您不同意或无法遵守这些规定，请不要使用本项目。
 
 ## 安装与使用
 
@@ -31,8 +34,6 @@ mmPlayer 虽然是响应式，但主要以 PC 端为主，移动端只做相应�
 node -v
 ```
 
-[Node.js 中文网](http://nodejs.cn/)
-
 ### mmPlayer
 
 ```sh
@@ -42,7 +43,9 @@ git clone https://github.com/maomao1996/Vue-mmPlayer
 # 进入 mmPlayer 播放器目录
 cd Vue-mmPlayer
 
-# 安装依赖 推荐使用 yarn
+# 安装依赖 推荐使用 pnpm
+pnpm install
+# 或者
 npm install
 
 # 本地运行 mmPlayer
@@ -72,10 +75,8 @@ node app.js
 
 ### 注意点
 
-**运行 mmPlayer 后无法获取音乐请检查后台 `api` 服务是否启动(即控制台请求报 404)**
-
-**线上部署不是直接将整个项目丢到服务器，再去运行 `npm run serve` 命令**
-
+**运行 mmPlayer 后无法获取音乐请检查后台 `api` 服务是否启动(即控制台请求报 404)**<br />
+**线上部署不是直接将整个项目丢到服务器，再去运行 `npm run serve` 命令**<br />
 **项目打包前 `VUE_APP_BASE_API_URL` 必须改后台 `api` 服务地址为线上地址，不能是本地地址**
 
 ### 关于项目线上部署
@@ -83,29 +84,40 @@ node app.js
 最近有不少小伙伴部署出了问题，我在这说明下
 
 - 后台 `api` 服务线上部署
-
-  - 你需要将 [NeteaseCloudMusicApi](https://binaryify.github.io/NeteaseCloudMusicApi) 下载
+  - 你需要将 [NeteaseCloudMusicApi](https://github.com/Binaryify/NeteaseCloudMusicApi) 下载
   - 然后将下载的文件上传至服务器
   - 再通过 `pm2` 去启动服务(`pm2` 安装和相关命令网上有很多，这里不再赘述)
   - 最后通过服务器 `ip` + 端口号访问验证 `api` 服务是否启动成功
-
-- `mmPlayer` 线上部署
-
+- `mmPlayer` 线上部署（推荐使用 [Vercel 部署](#vercel-部署)）
   - 首先要注意的是
   - 先将 `.env` 文件的 `VUE_APP_BASE_API_URL` 修改成上一步启动的后台 `api` 服务地址(服务器 `ip` + 端口号或者你绑定的域名)
   - 然后先在本地运行 `npm run build` 命令，会打包在生成一个 `dist` 文件
   - 最后将打包的 `dist` 文件上传到你的网站服务器目录即可
-
 - 其他：[在宝塔面板部署 mmPlayer](https://github.com/maomao1996/Blog/issues/1)（不喜欢写文，可能有点烂不要介意哈）
 - 最后：本人已和谷歌、百度达成合作了，如果还有啥不懂的，以后可以直接谷歌、百度
 
+#### Vercel 部署
+
+1. `fork` 此项目
+2. 在 [Vercel](https://vercel.com) 官网点击 New Project
+3. 点击 `Import Git Repository`
+   1. 选择你 `fork` 的此项目
+   2. 点击 `import`
+4. `Configure Project` 配置
+   1. `Project Name` 自己填
+   2. `Framework Preset` 选 `Vue.js` （基本默认就是，不用修改）
+   3. 点击 `Environment Variables`，并添加一条
+      1. `key` 输入 `VUE_APP_BASE_API_URL`
+      2. `value` 输入你后台 `api`（[NeteaseCloudMusicApi](https://github.com/Binaryify/NeteaseCloudMusicApi)）服务的线上地址
+5. 点击 `Deploy` 等部署完成即可
+
 ## 技术栈
 
-- [Vue Cli（Vue 脚手架工具）](https://cli.vuejs.org/zh/)
-- [Vue（核心框架）](https://cn.vuejs.org/)
-- [Vue Router（页面路由）](https://router.vuejs.org/zh/)
-- [Vuex（状态管理）](https://vuex.vuejs.org/zh/)
-- ES 6 / 7 （JavaScript 语言的下一代标准）
+- [Vue Cli](https://cli.vuejs.org/zh/) Vue 脚手架工具
+- [Vue 2.x](https://v2.cn.vuejs.org/) 核心框架
+- [Vue Router](https://router.vuejs.org/zh/) 页面路由
+- [Vuex](https://vuex.vuejs.org/zh/) 状态管理
+- ES6 （JavaScript 语言的下一代标准）
 - Less（CSS 预处理器）
 - Axios（网络请求）
 - FastClick（解决移动端 300ms 点击延迟）
@@ -181,13 +193,14 @@ node app.js
 │   │   ├── reset.less                              // 样式重置
 │   │   └── var.less                                // 样式变量（字体大小、字体颜色、背景颜色）
 │   ├── js                                          // 数据交互目录
+│   │   ├── axios.js                                // axios 简单封装
 │   │   ├── hack.js                                 // 修改 nextTick
 │   │   ├── mixin.js                                // 组件混合
 │   │   ├── song.js                                 // 数据处理
 │   │   ├── storage.js                              // localStorage 配置
 │   │   └── util.js                                 // 公用 js 方法
 │   ├── App.vue                                     // 根组件
-│   ├── config.js                                   // 基本配置
+│   ├── config.js                                   // 配置文件（播放器默认配置、版本号等）
 │   └── main.js                                     // 入口主文件
 └── vue.config.js                                   // vue-cli 配置文件
 
@@ -195,7 +208,7 @@ node app.js
 
 </details>
 
-## 功能
+## 功能与界面
 
 - 播放器
 - 快捷键操作
@@ -208,40 +221,40 @@ node app.js
 - 查看评论
 - 同步网易云歌单
 
-## 界面欣赏
+### 界面欣赏
 
 PC 端界面自我感觉还行， 就是移动端界面总觉得怪怪的，奈何审美有限，所以又去整了高仿网易云的 `React` 版本（如果小哥哥、小姐姐们有好看的界面，欢迎交流哈）
 
 <details>
 <summary>点击查看</summary>
 
-### PC
+#### PC
 
-#### 正在播放
+##### 正在播放
 
 ![正在播放](https://cdn.jsdelivr.net/gh/maomao1996/Vue-mmPlayer/screenshots/1.jpg)
 
-#### 排行榜
+##### 排行榜
 
 ![排行榜](https://cdn.jsdelivr.net/gh/maomao1996/Vue-mmPlayer/screenshots/2.jpg)
 
-#### 搜索
+##### 搜索
 
 ![搜索](https://cdn.jsdelivr.net/gh/maomao1996/Vue-mmPlayer/screenshots/3.jpg)
 
-#### 我的歌单
+##### 我的歌单
 
 ![我的歌单](https://cdn.jsdelivr.net/gh/maomao1996/Vue-mmPlayer/screenshots/4.jpg)
 
-#### 我听过的
+##### 我听过的
 
 ![我听过的](https://cdn.jsdelivr.net/gh/maomao1996/Vue-mmPlayer/screenshots/5.jpg)
 
-#### 歌曲评论
+##### 歌曲评论
 
 ![歌曲评论](https://cdn.jsdelivr.net/gh/maomao1996/Vue-mmPlayer/screenshots/6.jpg)
 
-### 移动端
+#### 移动端
 
 ![移动端一](https://cdn.jsdelivr.net/gh/maomao1996/Vue-mmPlayer/screenshots/7.jpg)
 ![移动端二](https://cdn.jsdelivr.net/gh/maomao1996/Vue-mmPlayer/screenshots/8.jpg)
@@ -250,13 +263,19 @@ PC 端界面自我感觉还行， 就是移动端界面总觉得怪怪的，奈�
 
 ## 更新说明
 
+### V1.8.3（2022.12.01）
+
+- 修复音乐搜索
+- 修复歌手信息为空
+- 优化横向滚动条样式
+
+<details>
+<summary>查看更多</summary>
+
 ### V1.8.2（2021.08.23）
 
 - 移除我的歌单喜欢的音乐
 - 优化请求错误处理
-
-<details>
-<summary>查看更多</summary>
 
 ### V1.8.1（2021.02.02）
 
@@ -466,12 +485,19 @@ PC 端界面自我感觉还行， 就是移动端界面总觉得怪怪的，奈�
 
 </details>
 
+## 数据统计
+
+因为百度统计现在数据存储时长默认为 1 年，造成前几年的数据都丢了（虽说没啥用，但是也是本作品成长的历史），所以在 [github](https://github.com/maomao1996/picture/tree/main/mmPlayer/stats) 保存下每年的累计访问
+
+> 2022 年累计访问
+
+![2022](https://cdn.jsdelivr.net/gh/maomao1996/picture/mmPlayer/stats/2022.png)
+
 ## 其他说明
 
 - 个人练手项目（本想先做移动端的，但是发现有很多人都做过，就稍微标新立异做个 PC 端）
-- 如果您喜欢该作品，您可以点右上角 "Star" "Fork" 表示支持 谢谢！
-- 后续：移动端版本、其他作品
-- 如有问题请直接在 [Issues](https://github.com/maomao1996/Vue-mmPlayer/issues/new) 中提，或者您发现问题并有非常好的解决方案，欢迎 PR
+- 如有问题请直接在 [Issues](https://github.com/maomao1996/Vue-mmPlayer/issues/new) 中提，或者您发现问题并有非常好的解决方案，欢迎 `PR`
+- 如果您喜欢该作品，您可以点右上角 "Star" 表示支持 谢谢！
 
 ## 鸣谢
 

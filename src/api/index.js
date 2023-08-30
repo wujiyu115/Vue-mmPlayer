@@ -1,8 +1,6 @@
 import axios from '@/utils/axios'
-import { defaultLimit } from '@/config'
-import { formatTopSongs } from '@/utils/song'
-
-axios.defaults.baseURL = process.env.VUE_APP_BASE_API_URL
+import { DEFAULT_LIMIT } from '@/config'
+import { formatSongs } from '@/utils/song'
 
 // 排行榜列表
 export function getToplistDetail() {
@@ -22,7 +20,7 @@ export function getPlaylistDetail(id) {
         params: { id }
       })
       .then(({ playlist }) => playlist || {})
-      .then(playlist => {
+      .then((playlist) => {
         const { trackIds, tracks } = playlist
         if (!Array.isArray(trackIds)) {
           reject(new Error('获取歌单详情失败'))
@@ -30,17 +28,17 @@ export function getPlaylistDetail(id) {
         }
         // 过滤完整歌单 如排行榜
         if (tracks.length === trackIds.length) {
-          playlist.tracks = formatTopSongs(playlist.tracks)
+          playlist.tracks = formatSongs(playlist.tracks)
           resolve(playlist)
           return
         }
         // 限制歌单详情最大 500
         const ids = trackIds
           .slice(0, 500)
-          .map(v => v.id)
+          .map((v) => v.id)
           .toString()
         getMusicDetail(ids).then(({ songs }) => {
-          playlist.tracks = formatTopSongs(songs)
+          playlist.tracks = formatSongs(songs)
           resolve(playlist)
         })
       })
@@ -48,7 +46,7 @@ export function getPlaylistDetail(id) {
 }
 
 // 搜索
-export function search(keywords, page = 0, limit = defaultLimit) {
+export function search(keywords, page = 0, limit = DEFAULT_LIMIT) {
   return axios.get('/search', {
     params: {
       offset: page * limit,
@@ -110,7 +108,7 @@ export function getLyric(id) {
 }
 
 // 获取音乐评论
-export function getComment(id, page, limit = defaultLimit) {
+export function getComment(id, page, limit = DEFAULT_LIMIT) {
   return axios.get('/comment/music', {
     params: {
       offset: page * limit,

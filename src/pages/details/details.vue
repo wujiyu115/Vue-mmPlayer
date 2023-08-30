@@ -28,7 +28,7 @@ export default {
   created() {
     // 获取歌单详情
     getPlaylistDetail(this.$route.params.id)
-      .then(playlist => {
+      .then((playlist) => {
         document.title = `${playlist.name} - mmPlayer在线音乐播放器`
         this.list = playlist.tracks
         this._hideLoad()
@@ -52,11 +52,7 @@ export default {
 
 <style lang="less" scoped>
 .details {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  .musicList {
-    width: 100%;
+  .music-list {
     height: 100%;
   }
 }

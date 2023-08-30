@@ -1,55 +1,27 @@
 <template>
-  <div class="music">
+  <div class="music flex-col">
     <div class="music-content">
-      <div class="music-left">
+      <div class="music-left flex-col">
         <music-btn @onClickLyric="handleOpenLyric" />
         <keep-alive>
-          <router-view v-if="$route.meta.keepAlive" class="music-list" />
+          <router-view v-if="$route.meta.keepAlive" class="router-view" />
         </keep-alive>
-        <router-view
-          v-if="!$route.meta.keepAlive"
-          :key="$route.path"
-          class="music-list"
-        />
+        <router-view v-if="!$route.meta.keepAlive" :key="$route.path" class="router-view" />
       </div>
       <div class="music-right" :class="{ show: lyricVisible }">
         <div class="close-lyric" @click="handleCloseLyric">关闭歌词</div>
-        <lyric
-          ref="lyric"
-          :lyric="lyric"
-          :nolyric="nolyric"
-          :lyric-index="lyricIndex"
-        />
+        <lyric ref="lyric" :lyric="lyric" :nolyric="nolyric" :lyric-index="lyricIndex" />
       </div>
     </div>
 
     <!--播放器-->
-    <div
-      class="music-bar"
-      :class="{ disable: !musicReady || !currentMusic.id }"
-    >
+    <div class="music-bar" :class="{ disable: !musicReady || !currentMusic.id }">
       <div class="music-bar-btns">
-        <mm-icon
-          class="pointer"
-          type="prev"
-          :size="36"
-          title="上一曲 Ctrl + Left"
-          @click="prev"
-        />
-        <div
-          class="control-play pointer"
-          title="播放暂停 Ctrl + Space"
-          @click="play"
-        >
+        <mm-icon class="pointer" type="prev" :size="36" title="上一曲 Ctrl + Left" @click="prev" />
+        <div class="control-play pointer" title="播放暂停 Ctrl + Space" @click="play">
           <mm-icon :type="playing ? 'pause' : 'play'" :size="24" />
         </div>
-        <mm-icon
-          class="pointer"
-          type="next"
-          :size="36"
-          title="下一曲 Ctrl + Right"
-          @click="next"
-        />
+        <mm-icon class="pointer" type="next" :size="36" title="下一曲 Ctrl + Right" @click="next" />
       </div>
       <div class="music-music">
         <div class="music-bar-info">
@@ -81,12 +53,7 @@
       />
 
       <!-- 评论 -->
-      <mm-icon
-        class="icon-color pointer comment"
-        type="comment"
-        :size="30"
-        @click="openComment"
-      />
+      <mm-icon class="icon-color pointer comment" type="comment" :size="30" @click="openComment" />
 
       <!-- 音量控制 -->
       <div class="music-bar-volume" title="音量加减 [Ctrl + Up / Down]">
@@ -103,13 +70,8 @@
 <script>
 import { getLyric } from 'api'
 import mmPlayerMusic from './mmPlayer'
-import {
-  randomSortArray,
-  parseLyric,
-  format,
-  silencePromise
-} from '@/utils/util'
-import { playMode, defaultBG } from '@/config'
+import { randomSortArray, parseLyric, format, silencePromise } from '@/utils/util'
+import { PLAY_MODE, MMPLAYER_CONFIG } from '@/config'
 import { getVolume, setVolume } from '@/utils/storage'
 import { mapGetters, mapMutations, mapActions } from 'vuex'
 
@@ -148,7 +110,7 @@ export default {
     picUrl() {
       return this.currentMusic.id && this.currentMusic.image
         ? `url(${this.currentMusic.image}?param=300y300)`
-        : `url(${defaultBG})`
+        : `url(${MMPLAYER_CONFIG.BACKGROUND})`
     },
     percentMusic() {
       const duration = this.currentMusic.duration
@@ -215,7 +177,7 @@ export default {
   methods: {
     // 按键事件
     initKeyDown() {
-      document.onkeydown = e => {
+      document.onkeydown = (e) => {
         switch (e.ctrlKey && e.keyCode) {
           case 32: // 播放暂停Ctrl + Space
             this.play()
@@ -282,7 +244,7 @@ export default {
         playlist: { length }
       } = this
       if (
-        (length - 1 === this.currentIndex && this.mode === playMode.order) ||
+        (length - 1 === this.currentIndex && this.mode === PLAY_MODE.ORDER) ||
         (length === 1 && flag)
       ) {
         this.setCurrentIndex(-1)
@@ -324,16 +286,16 @@ export default {
     modeChange() {
       const mode = (this.mode + 1) % 4
       this.setPlayMode(mode)
-      if (mode === playMode.loop) {
+      if (mode === PLAY_MODE.LOOP) {
         return
       }
       let list = []
       switch (mode) {
-        case playMode.listLoop:
-        case playMode.order:
+        case PLAY_MODE.LIST_LOOP:
+        case PLAY_MODE.ORDER:
           list = this.orderList
           break
-        case playMode.random:
+        case PLAY_MODE.RANDOM:
           list = randomSortArray(this.orderList)
           break
       }
@@ -342,7 +304,7 @@ export default {
     },
     // 修改当前歌曲索引
     resetCurrentIndex(list) {
-      const index = list.findIndex(item => {
+      const index = list.findIndex((item) => {
         return item.id === this.currentMusic.id
       })
       this.setCurrentIndex(index)
@@ -365,20 +327,20 @@ export default {
     // 获取播放模式 icon
     getModeIconType() {
       return {
-        [playMode.listLoop]: 'loop',
-        [playMode.order]: 'sequence',
-        [playMode.random]: 'random',
-        [playMode.loop]: 'loop-one'
+        [PLAY_MODE.LIST_LOOP]: 'loop',
+        [PLAY_MODE.ORDER]: 'sequence',
+        [PLAY_MODE.RANDOM]: 'random',
+        [PLAY_MODE.LOOP]: 'loop-one'
       }[this.mode]
     },
     // 获取播放模式 title
     getModeIconTitle() {
       const key = 'Ctrl + O'
       return {
-        [playMode.listLoop]: `列表循环 ${key}`,
-        [playMode.order]: `顺序播放 ${key}`,
-        [playMode.random]: `随机播放 ${key}`,
-        [playMode.loop]: `单曲循环 ${key}`
+        [PLAY_MODE.LIST_LOOP]: `列表循环 ${key}`,
+        [PLAY_MODE.ORDER]: `顺序播放 ${key}`,
+        [PLAY_MODE.RANDOM]: `随机播放 ${key}`,
+        [PLAY_MODE.LOOP]: `单曲循环 ${key}`
       }[this.mode]
     },
     // 查看歌词
@@ -394,12 +356,12 @@ export default {
     },
     // 获取歌词
     _getLyric(id) {
-      getLyric(id).then(res => {
-        if (res.nolyric) {
-          this.nolyric = true
-        } else {
+      getLyric(id).then((res) => {
+        if (res.lrc && res.lrc.lyric) {
           this.nolyric = false
           this.lyric = parseLyric(res.lrc.lyric)
+        } else {
+          this.nolyric = true
         }
         silencePromise(this.audioEle.play())
       })
@@ -415,6 +377,13 @@ export default {
 </script>
 
 <style lang="less">
+.router-view {
+  flex: 1;
+  overflow-x: hidden;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
 .music {
   padding: 75px 25px 25px 25px;
   width: 100%;
@@ -425,15 +394,13 @@ export default {
   overflow: hidden;
   .music-content {
     display: flex;
+    flex: 1;
+    overflow: hidden;
     width: 100%;
-    height: calc(~'100% - 80px');
     .music-left {
       flex: 1;
-      height: 100%;
+      width: 100%;
       overflow: hidden;
-      .music-list {
-        height: calc(~'100% - 60px');
-      }
     }
     .music-right {
       position: relative;
@@ -453,9 +420,7 @@ export default {
     display: flex;
     align-items: center;
     width: 100%;
-    height: 80px;
-    box-sizing: border-box;
-    padding-bottom: 15px;
+    padding: 15px 0;
     color: #fff;
     &.disable {
       pointer-events: none;
@@ -476,9 +441,6 @@ export default {
         height: 40px;
         color: #fff;
         background-color: rgba(255, 255, 255, 0.3);
-        .icon-bofang101 {
-          transform: translateX(2px);
-        }
       }
     }
 
@@ -587,17 +549,10 @@ export default {
   }
   //当屏幕小于768时
   @media (max-width: 768px) {
-    & {
-      padding: 75px 15px 5px 15px;
-    }
-
-    .music-content .music-left {
-      .music-list {
-        font-size: @font_size_medium;
-      }
-    }
+    padding: 75px 15px 5px 15px;
 
     .music-bar {
+      padding-top: 10px;
       .music-bar-info span,
       .music-bar-volume .mmProgress {
         display: none;
@@ -611,22 +566,23 @@ export default {
       flex-direction: column;
       .music-bar-btns {
         width: 60%;
-        margin-top: 15px;
+        margin-top: 10px;
         order: 2;
       }
       .music-music {
         padding-left: 0;
         order: 1;
       }
-      & > i.mode {
-        position: absolute;
-        top: 40px;
-        left: 5px;
-        margin: 0;
-      }
+      .mode,
       .comment {
         position: absolute;
-        top: 40px;
+        bottom: 20px;
+        margin: 0;
+      }
+      .mode {
+        left: 5px;
+      }
+      .comment {
         right: 5px;
       }
       .music-bar-volume {
