@@ -131,7 +131,7 @@ export function downloadMusic(url, fileName) {
 export function playOnXiaoAi(url) {
   return axios.get('/xiaoai', {
     params: {
-      url: url
+      url: url,
     },
   })
 }

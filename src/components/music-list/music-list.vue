@@ -146,7 +146,7 @@ export default {
       //   })
       playOnXiaoAi(item.url)
         .then((res) => {
-          this.$mmToast("推送音箱成功")
+          this.$mmToast('推送音箱成功')
         })
         .catch((error) => {
           this.$mmToast(error.response)
