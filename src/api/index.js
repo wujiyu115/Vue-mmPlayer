@@ -127,3 +127,11 @@ export function downloadMusic(url, fileName) {
     },
   })
 }
+// 在小爱音箱上播放
+export function playOnXiaoAi(url) {
+  return axios.get('/xiaoai', {
+    params: {
+      url: url
+    },
+  })
+}

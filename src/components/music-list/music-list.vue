@@ -28,7 +28,7 @@
               />
             </div>
           </div>
-          <span class="download-btn" @click.stop="downloadItem(item, index)">下载</span>
+          <span class="download-btn" @click.stop="downloadItem(item, index)">小爱</span>
           <span class="list-artist">{{ item.singer }}</span>
           <span v-if="isDuration" class="list-time">
             {{ item.duration % 3600 | format }}
@@ -53,7 +53,7 @@
 import { mapGetters, mapMutations } from 'vuex'
 import { format } from '@/utils/util'
 import MmNoResult from 'base/mm-no-result/mm-no-result'
-import { downloadMusic } from 'api'
+import { playOnXiaoAi } from 'api'
 
 const LIST_TYPE_ALBUM = 'album'
 const LIST_TYPE_DURATION = 'duration'
@@ -135,11 +135,18 @@ export default {
       if (e && /list-menu-icon-del/.test(e.target.className)) {
         return
       }
-      const file = item.name + '-' + item.singer + '.mp3'
+      // const file = item.name + '-' + item.singer + '.mp3'
       // console.log('downloading', item.url, file)
-      downloadMusic(item.url, file)
+      // downloadMusic(item.url, file)
+      //   .then((res) => {
+      //      console.log('download', res)
+      //   })
+      //   .catch((error) => {
+      //     this.$mmToast(error.response)
+      //   })
+      playOnXiaoAi(item.url)
         .then((res) => {
-          // console.log('download', res)
+          this.$mmToast("推送音箱成功")
         })
         .catch((error) => {
           this.$mmToast(error.response)
